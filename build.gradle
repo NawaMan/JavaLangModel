@@ -1,0 +1,44 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+sourceCompatibility = theSourceCompatibility
+targetCompatibility = theTargetCompatibility
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.functionalj:functionalj-all:0.5.5.0'
+    implementation 'io.functionalj:functionalj-types:0.5.5.0'
+    
+    // == Test ==
+    
+    testImplementation('org.junit.jupiter:junit-jupiter:5.7.1')
+    
+    testImplementation 'io.functionalj:functionalj-all:0.5.5.0'
+    testImplementation 'io.functionalj:functionalj-types:0.5.5.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// IDE
+
+eclipse {
+    classpath {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-parameters"
+        options.compilerArgs << "-Xlint:unchecked"
+        options.incremental = true
+    }
+}
